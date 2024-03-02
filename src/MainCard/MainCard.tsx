@@ -1,23 +1,41 @@
 import { LocationType } from "../types";
-
+import "./MainCard.scss";
 
 type MainCardProps = {
- weather: LocationType;
- 
-}
+  weather: LocationType;
+};
 
-const MainCard = ({weather} : MainCardProps) => {
-    return <div>
+const getGreetingMessage = (hour: number): string => {
+  if (hour < 12) {
+    return "Good Morning";
+  }
 
-    <h2> Greeting </h2>
-    <h3> Your name here </h3>
-    <h4> {weather.location.name} </h4>
+  if (hour < 18) {
+    return "Good Afternoon";
+  }
 
-    <img src={weather.current.condition.icon}/> 
-    <h1>{weather.current.temp_c} </h1>
-    <h3> {weather.current.condition.text}</h3>
+  return "Good Evening";
+};
 
+const MainCard = ({ weather }: MainCardProps) => {
+  const currentHour = new Date().getHours();
+  const greetingMessage = getGreetingMessage(currentHour);
+  return (
+    <div className="card">
+      <div className="  card__greeting">
+        <p>{greetingMessage} </p>
+        <p> Kat</p>
+      </div>
+      <div className=" card__info">
+      <h2> {weather.location.name} </h2>
+      <img src={weather.current.condition.icon} />
+      <h1>{weather.current.temp_c} °C </h1>
+      <h3> {weather.current.condition.text}</h3>
+      </div>
+
+  
     </div>
-}
+  );
+};
 
-export default MainCard ;
+export default MainCard;

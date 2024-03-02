@@ -1,11 +1,15 @@
 
-const AdditionalCards = () => {
+import { LocationType } from "../types";
+
+
+type AdditionalCardsProps = {
+    information: LocationType[];
+}
+
+const AdditionalCards = ({information}:AdditionalCardsProps) => {
     return <div>
-
-    <p>Tomorrow</p>
-    <p>Average temp</p>
-    <p>image placeholder </p>
-
+        {information.map((info) => <p>{info.forecast.forecastday[0].day.avgtemp_c}</p>)}
+    
     </div>
 }
 
