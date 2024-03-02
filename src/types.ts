@@ -1,21 +1,23 @@
-type location = {
-  name: string;
-  region: string;
-  country: string;
-  lat: number;
-  lon: number;
-  tz_id: string;
-  localtime_epoch: number;
-  localtime: string;
-};
-
-type current = {
+export type LocationType = {
+  location: {  name: string;
+    region: string;
+    country: string;
+    lat: number;
+    lon: number;
+    tz_id: string;
+    localtime_epoch: number;
+    localtime: string;
+  };
+  current: {
   last_updated_epoch: number;
   last_updated: string;
   temp_c: number;
   temp_f: number;
   is_day: number;
-  condition: Condition;
+  condition: {
+    text: string;
+    icon: string;
+    code: number;};
   wind_mph: number;
   wind_kph: number;
   wind_degree: number;
@@ -44,9 +46,5 @@ type current = {
     gb_defra: number;
   };
 };
-
-type Condition = {
-  text: string;
-  icon: string;
-  code: number;
 };
+

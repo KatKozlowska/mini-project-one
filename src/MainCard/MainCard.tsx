@@ -1,15 +1,21 @@
+import { LocationType } from "../types";
 
 
-const MainCard = () => {
+type MainCardProps = {
+ weather: LocationType;
+ 
+}
+
+const MainCard = ({weather} : MainCardProps) => {
     return <div>
 
     <h2> Greeting </h2>
     <h3> Your name here </h3>
-    <h4> Location </h4>
+    <h4> {weather.location.name} </h4>
 
-    {/* <img> image of weather icon </img> */}
-    <h1> Temperature </h1>
-    <h3> breif description</h3>
+    <img src={weather.current.condition.icon}/> 
+    <h1>{weather.current.temp_c} </h1>
+    <h3> {weather.current.condition.text}</h3>
 
     </div>
 }
