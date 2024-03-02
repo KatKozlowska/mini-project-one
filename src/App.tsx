@@ -3,10 +3,12 @@ import MainCard from "./MainCard/MainCard";
 import { LocationType } from "./types";
 import SearchBox from "./searchBox/SearchBox";
 import "./App.scss";
+import AdditionalCards from "./AdditionalCards/AdditionalCrads";
 
 const App = () => {
   const [w, setW] = useState<LocationType>();
-  const [search, setSearch] = useState<string>("London");
+  const [search, setSearch] = useState<string>("fuerteventura");
+
 
   const handleInput = (event: FormEvent<HTMLInputElement>) => {
     setSearch(event.currentTarget.value);
@@ -15,7 +17,7 @@ const App = () => {
 
   const getWeather = async () => {
     const response = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=ca9cfe00e9bb45cf9ff133104240203&q=${search}&days=2&aqi=yes&alerts=no`
+      `http://api.weatherapi.com/v1/forecast.json?key=ca9cfe00e9bb45cf9ff133104240203&q=${search}&days=5&aqi=yes&alerts=no`
     );
     const weatherData = await response.json();
     setW(weatherData);
@@ -24,7 +26,7 @@ const App = () => {
   useEffect(() => {
     getWeather();
     
-  }, [search]);
+  }, []);
 
   return (
     <div className="app">
@@ -35,6 +37,7 @@ const App = () => {
         handleInput={handleInput}     />
         </nav>
       {w && <MainCard weather={w} />}
+      {w && <AdditionalCards information={w}/>}
     </div>
   );
 };

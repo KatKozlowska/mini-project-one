@@ -1,0 +1,16 @@
+
+.container {
+    margin:20px;
+}
+
+.small-card{
+    margin: 5px 0px;
+    display: flex;
+    justify-content: space-around;
+    height:50px;
+    border-radius: 7px;
+    background-color: rgba(255, 255, 255, 0.35); 
+    &__img{
+        height:45px;
+    }
+}
