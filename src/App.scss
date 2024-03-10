@@ -1,5 +1,7 @@
 .app {
-    height:100vh;
+
+  padding:10px;
+    height:100%;
     width:100%;
     background-image: linear-gradient(
         to right top,
@@ -17,4 +19,14 @@
         #eedfc1
       );
 
+}
+
+.to-do {
+  padding:20px;
+  width: 500px;
+}
+
+.app-cont{
+  display: flex;
+  justify-content: space-around;
 }

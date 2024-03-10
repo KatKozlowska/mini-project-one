@@ -1,43 +1,84 @@
 import { FormEvent, useEffect, useState } from "react";
 import MainCard from "./MainCard/MainCard";
-import { LocationType } from "./types";
-import SearchBox from "./searchBox/SearchBox";
+import { ToDoTypes } from "./toDoTypes";
 import "./App.scss";
 import AdditionalCards from "./AdditionalCards/AdditionalCrads";
+import { MyLocationType } from "./geolocation";
+import ToDoNav from "./ToDo/ToDoNav";
+import ToDoList from "./ToDo/ToDoList";
 
 const App = () => {
-  const [w, setW] = useState<LocationType>();
-  const [search, setSearch] = useState<string>("fuerteventura");
-
+  const [location, setLocation] = useState<MyLocationType>();
+  const defaultLocation = { latitude: 51.5072, longitude: 0.1276 };
+  const [input, setInput] = useState<string>("");
+  const [todo, setTodo] = useState<ToDoTypes[]>([]);
 
   const handleInput = (event: FormEvent<HTMLInputElement>) => {
-    setSearch(event.currentTarget.value);
+    setInput(event.currentTarget.value);
+  };
+  const addTask = (): void => {
+    const newTask = { taskName: input };
+    setTodo([...todo, newTask]);
   };
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); //makes sure the page does not refresh every time you add new task
+    if (input == "") {
+      alert("Please enter a todo");
+    } else addTask();
+    setInput("");
+  };
 
-  const getWeather = async () => {
-    const response = await fetch(
-      `http://api.weatherapi.com/v1/forecast.json?key=ca9cfe00e9bb45cf9ff133104240203&q=${search}&days=5&aqi=yes&alerts=no`
+  const toDelete = (taskNametoDelete: string): void => {
+    setTodo(
+      todo.filter((task) => {
+        return task.taskName != taskNametoDelete;
+      })
     );
-    const weatherData = await response.json();
-    setW(weatherData);
   };
+
+  const reset = () => {
+    setInput("");
+    setTodo([]);
+  };
+
+
+  
 
   useEffect(() => {
-    getWeather();
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((location) => {
+        setLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      })
     
+    }  else {setLocation(defaultLocation)
+        console.log("location unaccessible, default value used")}
+
   }, []);
+
+
 
   return (
     <div className="app">
-      <nav>
-      <SearchBox
-        search={search}
-        placeholder={"Search location"} 
-        handleInput={handleInput}     />
-        </nav>
-      {w && <MainCard weather={w} />}
-      {w && <AdditionalCards information={w}/>}
+      {location && <MainCard locations={location}  />}
+     
+     <div className="app-cont">
+      {location && <AdditionalCards locations={location} />}
+      <div className="to-do">
+      <ToDoNav
+        reset={reset}
+        handleSubmit={handleSubmit}
+        input={input}
+        handleInput={handleInput}
+      />
+      {todo.map((task: ToDoTypes, key: number) => {
+        return <ToDoList toDelete={toDelete} key={key} task={task} />;
+      })}
+    </div>
+    </div>
     </div>
   );
 };
